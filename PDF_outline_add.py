@@ -97,28 +97,27 @@ r_entry = r"^(\s*)(([ivxlcdm]||\d)+)\s+(.*?)\s*$"          # Outline entry regex
 outline_items = []
 with open("%s" % file_outline, 'r') as f:
 	lines = [line.rstrip() for line in f.readlines() if not (line == '' or line == '\n' or line == '\r')]
+	prev = 0
+	par = None
 	for line in lines:
 		parts = re.match(r_entry, line).groups()
-		prev = 0
-		par = None
 		if len(parts) >= 3:
 			title = parts[3]
 			page_number = getNumber(parts[1])
 			level = int(parts[0].count(' '))
-			if level == prev:
+			print("title: %s, page number: %s, level: %s, prev: %s" % (title, page_number, level, prev))
+			if level == 0:
 				outline_items.append(OutlineElement(title, level, page_number))
-			elif level == prev+1:
-				prev+=1
-				outline_items[-1].add_child(OutlineElement(title, level, page_number, outline_items[-1]))
-			elif level < prev:
-				prev = level
 				par = outline_items[-1]
-				for i in range(prev):
-					if par.children:
-						par = par.children[-1]
+			elif abs(level - prev) < 2:
+				while(prev >= level):
+					prev -= 1
+					par = par.parent
 				par.add_child(OutlineElement(title, level, page_number, par))
+				par = par.children[-1]
 			else:
-				raise Exception("Error: the difference between the next subsection level and this one must not be bigger than one.")
+				raise Exception("Error: the difference between the next subsection level and this one must not be bigger than one: page title: %s, page number: %s, level: %s\n%s" % (title, page_number, level, prev))
+			prev = level
 
 for item in outline_items:
 	print(repr(item))
