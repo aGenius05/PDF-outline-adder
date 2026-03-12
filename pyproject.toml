@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61", "setuptools-scm", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+requires = ["setuptools>=80", "setuptools-scm[simple]>=9.2"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "PDF_outline_adder"
@@ -23,5 +23,3 @@ PDF_outline_add = "scr.main:main"
 [project.urls]
 Homepage="https://github.com/agenius05/PDF-outline-adder"
 Repository="https://github.com/agenius05/PDF-outline-adder"
-
-[tool.setuptools_scm]
