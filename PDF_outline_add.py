@@ -5,7 +5,7 @@ from sys import argv
 import re
 
 if len(argv) != 5:
-	print ('Arguments: [input_pdf_file] [first_page] [outline_file] [output_pdf_file]')
+	print ('Usage: [input_pdf_file] [first_page] [outline_file] [output_pdf_file]\nMore @ https://github.com/agenius05/PDF-outline-adder')
 	exit(-1)
       
 # argomenti

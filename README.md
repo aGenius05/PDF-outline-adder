@@ -2,6 +2,8 @@
 Un semplice strumento CLI ideato per tutti quegli studenti che nel tentativo di risparmiare un po' di peso nello zaino si convertono al digitale ma "trovano" soltanto pdf senza indice e soprattutto con una numerazione sfalsata a causa di indice, prefazione e quant altro.
 
 ## Installazione
+### pipx
+### Installazione manuale
 l'installazione è molto semplice, avrai bisogno di `python3`, la libreria `pikepdf`, che si consiglia di installare in un virtual environment tramite `pip3` eseguendo
 
 ```bash
@@ -21,3 +23,10 @@ dove `file_input` è il pdf che si vuole lavorare, `prima_pagina` è il numero d
 
 ## Gemini Gem
 Per costruire il file dell'indice risulta molto efficace creare un `Agent` personalizzato di Gemini(Gem). Per fare ciò fornire il [prompt](./prompt.txt).
+
+# TODO
+- [ ] esporta indice esistente
+- [ ] implementare unittest
+- [ ] scrivere e testare setup.py
+- [ ] scrivere istruzioni per installare con `pipx`
+- [ ] documentare meglio
