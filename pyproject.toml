@@ -1,0 +1,18 @@
+[project]
+name = "PDF_outline_adder"
+dynamic = ["version"]
+description = "A tool to add an outline to a PDF file and shift page numbers"
+authors = [
+  {name = "agenius05"},
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.14"
+dependencies = [
+    "pikepdf>=10.5.0",
+]
+license-files = ["LICENCE"]
+keywords=["cli", "tool"]
+
+[project.urls]
+Homepage="https://github.com/agenius05/PDF-outline-adder"
+Repository="https://github.com/agenius05/PDF-outline-adder"

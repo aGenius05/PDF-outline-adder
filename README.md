@@ -30,3 +30,5 @@ Per costruire il file dell'indice risulta molto efficace creare un `Agent` perso
 - [ ] scrivere e testare setup.py
 - [ ] scrivere istruzioni per installare con `pipx`
 - [ ] documentare meglio
+- [ ] implementare CI/CD per creare requirements, testare, buildare e pubblicare
+- [ ] informazioni giuste riguardo alla versione
