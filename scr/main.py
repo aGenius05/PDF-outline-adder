@@ -4,7 +4,7 @@ from pikepdf import Name, Dictionary, Array, OutlineItem
 from sys import argv
 import re
 
-if __name__ == "__main__":
+def main():
     if len(argv) != 5:
         print ('Usage: [input_pdf_file] [first_page] [outline_file] [output_pdf_file]\nMore @ https://github.com/agenius05/PDF-outline-adder')
         exit(-1)
@@ -154,3 +154,6 @@ if __name__ == "__main__":
         pdf.save(file_output)
 
     print(f"File salvato con successo come: {file_output}")
+
+if __name__ == "__main__":
+    main()

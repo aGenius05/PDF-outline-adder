@@ -13,6 +13,9 @@ dependencies = [
 license-files = ["LICENCE"]
 keywords=["cli", "tool"]
 
+[project.scripts]
+PDF_outline_add = "scr.main:main"
+
 [project.urls]
 Homepage="https://github.com/agenius05/PDF-outline-adder"
 Repository="https://github.com/agenius05/PDF-outline-adder"
