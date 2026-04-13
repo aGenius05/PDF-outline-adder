@@ -20,7 +20,7 @@ def getArgs(args_input=None):
     writer_parser.add_argument("input_pdf_file", help="Path to input PDF")
     writer_parser.add_argument("outline_file", help="Path to outline text file")
     writer_parser.add_argument("-o", "--output", metavar="<path>", dest="output_file", help="Path to output PDF, default: overwrite file", required=False, default=None)
-    writer_parser.add_argument("-s", "--start", action="store", dest="first_page", metavar="<number>", type=int, help="First real page number (1-based)", required=False, default=None)
+    writer_parser.add_argument("-s", "--start", action="store", dest="first_page", metavar="<number>", type=int, help="First real page number (1-based). Defaults to first arab number page number in the outline file.", required=False, default=None)
     writer_parser.add_argument("-d", "--dry", action="store_true", help="Print the parsed index")
     writer_parser.add_argument("--debug", action="store_true", help="Enable debug output")
 
@@ -47,8 +47,12 @@ def parseOutline(file_outline, start=1, args=None):
             parts = syntax.match(line).groups()
             if len(parts) >= 3:
                 title = parts[3]
-                # TODO: if start hasn't been specified get from outline file(first arab page number)
-                page_number = getNumber(parts[1], start)
+                if start is None:   # start hasn't been specified
+                    try:
+                        start = int(parts[1])+1 # if the page number is the first arab number use it as starrt
+                    except ValueError:
+                        pass
+                page_number = getNumber(parts[1], start or 1)   # get page number with start fallback to 1
                 level = int(parts[0].count(' '))
                 if args and args.debug:
                     print("title: %s, page number: %s, level: %s, prev: %s" % (title, page_number, level, prev))
