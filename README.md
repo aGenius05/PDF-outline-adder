@@ -82,9 +82,7 @@ To generate index file it's very useful having a custom `Agent` for Gemini(Gem).
 
 # TODO
 - [ ] export index from existing pdf
+- [ ] write tests
 - [ ] right numeration on pages with double pages(different on index and book eventually)
-- [ ] y-ordinate for outline entries?
 - [ ] in place edit?
-- [ ] tablevel to accept files with n-tabs indentation
 - [ ] check if previus uri-link need to be preserved and add option eventually
-- [ ] automatic book start page recognition made on main instead of inside the function(must work also for the wirter and i don't want to repeat the same operation over and over)

@@ -24,6 +24,8 @@ def getArgs(args_input=None):
     writer_parser.add_argument("-s", "--start", action="store", dest="first_page", metavar="<number>", type=int, help="First real page number (1-based). Defaults to first arab number page number in the outline file.", required=False, default=None)
     writer_parser.add_argument("-d", "--dry", action="store_true", help="Print the parsed index")
     writer_parser.add_argument("--debug", action="store_true", help="Enable debug output")
+    writer_parser.add_argument("--input-tabsize", "-it", dest="input_tabsize", metavar="<number>", type=int, help="Number of spaces corresponding to a tab in the outline file, default: 1", required=False, default=1)
+    writer_parser.add_argument("--output-tabsize", "-ot", dest="output_tabsize", metavar="<number>", type=int, help="Number of spaces corresponding to a tab in the parsed output, default: 1", required=False, default=1)
 
 
     # extractor attributes
@@ -32,6 +34,7 @@ def getArgs(args_input=None):
     extractor_parser.add_argument("-o", "--output", metavar="<path>", dest="output_file", help="Path to extracted outline file, default: outline.txt", required=False, default="outline.txt")
     extractor_parser.add_argument("--debug", action="store_true", help="Enable debug output")
     extractor_parser.add_argument("-s", "--start", help="specify book start page different from the one in the pdf. If not specified defaults to PDF's one", default=None, dest="start", type=int, required=False)
+    extractor_parser.add_argument("--tabsize", "-t", dest="tabsize", metavar="<number>", type=int, help="Number of spaces corresponding to a tab in the outline file, default: 1", required=False, default=1)
 
     args = parser.parse_args(args_input)
     return args
@@ -54,7 +57,7 @@ def parseOutline(file_outline, start=1, args=None):
                     except ValueError:
                         pass
                 page_number = getNumber(parts[1], start or 1)   # get page number with start fallback to 1
-                level = int(parts[0].count(' '))
+                level = int(parts[0].count(' '*(args.input_tabsize or 1)))
                 if args and args.debug:
                     print("title: %s, page number: %s, level: %s, prev: %s" % (title, page_number, level, prev))
                 if level == 0:
@@ -79,6 +82,7 @@ def parseOutline(file_outline, start=1, args=None):
     # stampo l'indice parsato (debug)
     if args and args.dry:
         for item in outline_items:
+            item.set_tabsize(args.output_tabsize)
             print(repr(item))
 
     return outline_items
@@ -153,6 +157,7 @@ def main():
             with pdf.open_outline() as outline:
                 for item in outline.root:
                     outline_items.append(OutlineElement.from_OutlineItem(item, pdf, start=start))
+                    outline_items[-1].set_tabsize(args.tabsize)
         if not args.debug:
             with open(file_output, 'w') as f:
                 for item in outline_items:
