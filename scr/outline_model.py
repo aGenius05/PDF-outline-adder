@@ -15,19 +15,11 @@ class OutlineElement:
 	def set_preface(self):
 		self._preface = True
 	
-	def from_OutlineItem(item: OutlineItem, pdf, level=0, start=None):
+	def from_OutlineItem(item: OutlineItem, pdf, start, level=0):
 		page = resolve_page_from_item(pdf, item)
 		page_number = page.index+1 if page is not None else None
 		if page_number is None:
 			print("ERROR: cannot retrive outline page number!!", file=sys.stderr)
-		if start == None:
-			try:
-				numbering = pdf.Root.PageLabels.Nums
-				for page, index in [(numbering[x], numbering[x+1]) for x in range(0, len(numbering), 2)]:
-					if index["/S"] == Name("/D"):
-						start = page
-			except Exception:
-				start = 0
 		preface = True
 		if page_number>start:
 			page_number-=start
@@ -36,7 +28,7 @@ class OutlineElement:
 		if preface:
 			element.set_preface()
 		for child in item.children:
-			element.add_child(OutlineElement.from_OutlineItem(child, pdf, level+1, start))
+			element.add_child(OutlineElement.from_OutlineItem(child, pdf, start, level+1))
 		return element
 
 	def add_child(self, child):
@@ -137,6 +129,7 @@ def getNumber(s, start=1):
 
 	return res
 
+# given an OutlineItem, returns the corresponding page object in the pdf, or None if it cannot be resolved
 def resolve_page_from_item(pdf, item):
     dest = item.destination
 
@@ -180,3 +173,15 @@ def resolve_page_from_item(pdf, item):
             return resolve_page_from_item(pdf, fake)
 
     return None  # non risolvibile
+
+# this function returns the start page number of the logical numbering or the proviced start if it is not None. 0-based
+def getExistingStart(pdf, start=None):
+	if start == None:
+		try:
+			numbering = pdf.Root.PageLabels.Nums
+			for page, index in [(numbering[x], numbering[x+1]) for x in range(0, len(numbering), 2)]:
+				if index["/S"] == Name("/D"):
+					start = page
+		except Exception:
+			start = 0
+	return start

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import pikepdf
 from pikepdf import Name, Dictionary, Array
-from outline_model import OutlineElement, getNumber
+from outline_model import OutlineElement, getNumber, getExistingStart
 from importlib.metadata import version
 import argparse
 import re
@@ -149,9 +149,10 @@ def main():
 
         outline_items = []
         with pikepdf.open(file_input) as pdf:
+            start = getExistingStart(pdf, args.start)
             with pdf.open_outline() as outline:
                 for item in outline.root:
-                    outline_items.append(OutlineElement.from_OutlineItem(item, pdf, start=args.start))
+                    outline_items.append(OutlineElement.from_OutlineItem(item, pdf, start=start))
         if not args.debug:
             with open(file_output, 'w') as f:
                 for item in outline_items:
